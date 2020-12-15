@@ -11,7 +11,13 @@ class Color extends Field
     public function __construct($name, $attribute = null, $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
-        $this->slider();
+        $this->twitter();
+        $this->autoHidePicker();
+    }
+
+    public function autoHidePicker(bool $shouldAutoHide = true)
+    {
+        return $this->withMeta(['autoHidePicker' => $shouldAutoHide]);
     }
 
     public function pickerType(string $type)

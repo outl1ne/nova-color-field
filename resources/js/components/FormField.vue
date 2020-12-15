@@ -1,7 +1,7 @@
 <template>
-  <default-field :field="field">
+  <default-field :field="field" class="color-picker">
     <template slot="field">
-      <div class="inline-flex mb-2">
+      <div class="inline-flex mb-2" @click="showPicker" ref="inputArea">
         <div
           class="color-input rounded-l-lg border-r-0 h-100 border border-60 color-input-value"
           v-bind:style="{ backgroundColor: value, width: '36px' }"
@@ -18,9 +18,11 @@
       </div>
 
       <component
+        v-if="shouldShowPicker"
+        ref="pickerArea"
         :is="component"
         :id="field.name"
-        :class="errorClasses"
+        :class="[errorClasses, { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'z-10': true }]"
         :palette="palette"
         :value="value"
         @input="handleChange"
@@ -54,6 +56,18 @@ export default {
 
   props: ['resourceName', 'resourceId', 'field'],
 
+  data() {
+    return {
+      shouldShowPicker: !this.field.autoHidePicker,
+    };
+  },
+
+  beforeDestroy() {
+    if (this.shouldShowPicker) {
+      document.removeEventListener('click', this.documentClick);
+    }
+  },
+
   methods: {
     setInitialValue() {
       this.value = this.field.value || '';
@@ -63,6 +77,27 @@ export default {
     },
     handleChange(value) {
       this.value = value.hex;
+    },
+    documentClick(event) {
+      const inputArea = this.$refs.inputArea;
+      const pickerArea = this.$refs.pickerArea.$el;
+      const target = event.target;
+
+      if (target === inputArea || target === pickerArea) return;
+      if (inputArea.contains(target) || pickerArea.contains(target)) return;
+      this.hidePicker();
+    },
+    showPicker() {
+      if (this.field.autoHidePicker) {
+        if (!this.shouldShowPicker) {
+          document.addEventListener('click', this.documentClick);
+        }
+        this.shouldShowPicker = true;
+      }
+    },
+    hidePicker() {
+      document.removeEventListener('click', this.documentClick);
+      this.shouldShowPicker = false;
     },
   },
 
@@ -82,3 +117,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.color-picker .absolute {
+  position: absolute !important;
+}
+</style>
