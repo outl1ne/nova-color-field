@@ -5,7 +5,8 @@
         <div
           class="color-input rounded-l-lg border-r-0 h-100 border border-60 color-input-value"
           v-bind:style="{ backgroundColor: value, width: '36px' }"
-        ></div>
+        />
+
         <input
           :id="field.name"
           type="text"
@@ -15,6 +16,7 @@
           v-model="value"
         />
       </div>
+
       <component
         :is="component"
         :id="field.name"
@@ -22,8 +24,8 @@
         :palette="palette"
         :value="value"
         @input="handleChange"
-      >
-      </component>
+      />
+
       <p v-if="hasError" class="my-2 text-danger">
         {{ firstError }}
       </p>
@@ -33,56 +35,47 @@
 
 <script>
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
+import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatches } from 'vue-color';
 
 export default {
   mixins: [FormField, HandlesValidationErrors],
 
+  components: {
+    'chrome-picker': Chrome,
+    'compact-picker': Compact,
+    'grayscale-picker': Grayscale,
+    'material-picker': Material,
+    'photoshop-picker': Photoshop,
+    'sketch-picker': Sketch,
+    'slider-picker': Slider,
+    'swatches-picker': Swatches,
+  },
+
   props: ['resourceName', 'resourceId', 'field'],
 
   methods: {
-    /**
-     * Set the initial, internal value for the field.
-     */
     setInitialValue() {
       this.value = this.field.value || '';
     },
-
-    /**
-     * Fill the given FormData object with the field's internal value.
-     */
     fill(formData) {
       formData.append(this.field.attribute, this.value || '');
     },
-
-    /**
-     * Update the field's internal value.
-     */
     handleChange(value) {
       this.value = value.hex;
     },
   },
 
   computed: {
-    /**
-     * Determines which color picker component to use
-     */
     component() {
       return this.field.pickerType + '-picker';
     },
-    /**
-     * Set color palette.
-     */
     palette() {
       return this.field.palette || undefined;
     },
-    /**
-     * Determines the placeholder.
-     */
     placeholder() {
       if (this.field.extraAttributes === undefined) {
         return this.field.name;
       }
-
       return this.field.extraAttributes.placeholder || this.field.name;
     },
   },
