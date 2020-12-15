@@ -6,7 +6,7 @@ use Laravel\Nova\Fields\Field;
 
 class Color extends Field
 {
-    public $component = 'color';
+    public $component = 'color-field';
 
     public function __construct($name, $attribute = null, $resolveCallback = null)
     {
@@ -27,6 +27,11 @@ class Color extends Field
     public function chrome()
     {
         return $this->pickerType('chrome');
+    }
+
+    public function twitter()
+    {
+        return $this->pickerType('twitter');
     }
 
     public function compact()

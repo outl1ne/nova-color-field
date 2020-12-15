@@ -35,7 +35,7 @@
 
 <script>
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
-import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatches } from 'vue-color';
+import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatches, Twitter } from 'vue-color';
 
 export default {
   mixins: [FormField, HandlesValidationErrors],
@@ -49,6 +49,7 @@ export default {
     'sketch-picker': Sketch,
     'slider-picker': Slider,
     'swatches-picker': Swatches,
+    'twitter-picker': Twitter,
   },
 
   props: ['resourceName', 'resourceId', 'field'],
