@@ -1,31 +1,32 @@
 {
-    "name": "timothyasp/nova-color-field",
-    "description": "A Laravel Nova Color Picker field.",
-    "keywords": [
-        "laravel",
-        "nova",
-        "color picker",
-        "field"
-    ],
-    "license": "MIT",
-    "require": {
-        "php": ">=7.1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Timothyasp\\Color\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Timothyasp\\Color\\FieldServiceProvider"
-            ]
-        }
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+  "name": "optimistdigital/nova-color-field",
+  "description": "A Laravel Nova Color Picker field.",
+  "keywords": [
+    "laravel",
+    "nova",
+    "color picker",
+    "field"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=7.2.0",
+    "laravel/nova": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "OptimistDigital\\NovaColorField\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "OptimistDigital\\NovaColorField\\ColorFieldServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

@@ -1,21 +1,16 @@
 <?php
 
-namespace Timothyasp\Color;
+namespace OptimistDigital\NovaColorField;
 
 use Laravel\Nova\Fields\Field;
 
 class Color extends Field
 {
-    /**
-     * The field's component.
-     * @var string
-     */
     public $component = 'color';
 
     public function __construct($name, $attribute = null, $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
-
         $this->slider();
     }
 
