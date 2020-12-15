@@ -18,9 +18,8 @@ Forked from [timothyasp/nova-color-field](https://github.com/timothyasp/nova-col
 
 ## Screenshots
 
-![Details page](TODO)
-
-![Index page](TODO)
+![Form page](./docs/form.png)
+![Details page](./docs/detail.png)
 
 ## Installation
 
