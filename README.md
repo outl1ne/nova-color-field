@@ -43,6 +43,8 @@ public function fields(Request $request) {
 
 Optionally use themes, see the selection [here](http://xiaokaike.github.io/vue-color/).
 
+You can use any one of: `chrome, compact, grayscale, material, photoshop, sketch, slider, swatches, twitter`.
+
 ```php
 use OptimistDigital\NovaColorField\Color;
 
@@ -52,8 +54,6 @@ public function fields(Request $request) {
     // ...
 }
 ```
-
-You can use any one of: `chrome, compact, grayscale, material, photoshop, sketch, slider, swatches`.
 
 Palette support for adding custom colors to the pickers is also available:
 
