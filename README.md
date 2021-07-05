@@ -31,7 +31,7 @@ composer require optimistdigital/nova-color-field
 
 ## Usage
 
-Use it like you would a regular Nova Field:
+### General
 
 ```php
 use OptimistDigital\NovaColorField\Color;
@@ -41,9 +41,11 @@ public function fields(Request $request) {
 }
 ```
 
-Optionally use themes, see the selection [here](http://xiaokaike.github.io/vue-color/).
+### Themes
 
-You can use any one of: `chrome, compact, grayscale, material, photoshop, sketch, slider, swatches, twitter`.
+Available themes: `chrome, compact, grayscale, material, photoshop, sketch, slider, swatches, twitter`.
+
+See the theme demos [here](http://xiaokaike.github.io/vue-color/).
 
 ```php
 use OptimistDigital\NovaColorField\Color;
@@ -55,7 +57,22 @@ public function fields(Request $request) {
 }
 ```
 
-Palette support for adding custom colors to the pickers is also available:
+### Customizing save and display formats
+
+If you would like to display and save the color in a format other than `hex`, you can use the `->displayAs('hex')` and `->saveAs('hex')` helpers.
+
+Available options are: `rgb, rgba, hex, hex8, hsl`.
+
+```php
+Color::make('Color')
+  ->chrome()
+  ->displayAs('hex8')
+  ->saveAs('hex8'),
+```
+
+### Palettes
+
+Adding custom pallette colors to the pickers can be done like so:
 
 ```php
 Color::make('Color')
