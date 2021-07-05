@@ -12,17 +12,17 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^7.15.0",
-    "laravel-mix": "^5.0.9",
-    "laravel-nova": "^1.7.0",
-    "prettier": "^2.2.1",
-    "resolve-url-loader": "^3.1.2",
-    "sass": "^1.30.0",
-    "sass-loader": "^10.1.0",
-    "vue-template-compiler": "^2.6.12"
+    "eslint": "^7.30.0",
+    "laravel-mix": "^6.0.25",
+    "laravel-nova": "^1.12.3",
+    "prettier": "^2.3.2",
+    "resolve-url-loader": "^4.0.0",
+    "sass": "^1.35.1",
+    "sass-loader": "^12.1.0",
+    "vue-template-compiler": "^2.6.14"
   },
   "dependencies": {
-    "vue": "^2.6.12",
-    "vue-color": "^2.8.0"
+    "vue": "^2.6.14",
+    "vue-color": "^2.8.1"
   }
 }
