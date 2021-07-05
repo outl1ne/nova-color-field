@@ -2,7 +2,9 @@
 
 namespace OptimistDigital\NovaColorField;
 
+use Exception;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Color extends Field
 {
@@ -13,6 +15,9 @@ class Color extends Field
         parent::__construct($name, $attribute, $resolveCallback);
         $this->twitter();
         $this->autoHidePicker();
+        $this->saveAs('hex');
+        $this->displayAs('hex');
+        $this->nullable();
     }
 
     public function autoHidePicker(bool $shouldAutoHide = true)
@@ -73,5 +78,29 @@ class Color extends Field
     public function swatches()
     {
         return $this->pickerType('swatches');
+    }
+
+    public function saveAs($saveAs = 'hex')
+    {
+        if (!in_array($saveAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) throw new Exception("Invalid saveAs option provided [$saveAs].");
+        return $this->withMeta(['saveAs' => $saveAs]);
+    }
+
+    public function displayAs($displayAs = 'hex')
+    {
+        if (!in_array($displayAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) throw new Exception("Invalid displayAs option provided [$displayAs].");
+        return $this->withMeta(['displayAs' => $displayAs]);
+    }
+
+    protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
+    {
+        if ($request->exists($requestAttribute)) {
+            // Try to turn into array
+            $value = $request[$requestAttribute];
+            $arrayValue = json_decode($value, true);
+            if (!empty($arrayValue)) $value = $arrayValue;
+
+            $model->{$attribute} = $this->isNullValue($value) ? null : $value;
+        }
     }
 }

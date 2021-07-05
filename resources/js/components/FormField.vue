@@ -1,10 +1,10 @@
 <template>
-  <default-field :field="field" class="color-picker">
+  <default-field :field="field" class="color-picker-field">
     <template slot="field">
-      <div class="inline-flex mb-2" @click="showPicker" ref="inputArea">
+      <div class="inline-flex mb-2 color-picker" @click="showPicker" ref="inputArea">
         <div
-          class="color-input rounded-l-lg border-r-0 h-100 border border-60 color-input-value"
-          v-bind:style="{ backgroundColor: value, width: '36px' }"
+          class="color-button rounded-l-lg border-r-0 h-100 border border-60 color-input-value"
+          v-bind:style="{ backgroundColor: hexValue, width: '36px' }"
         />
 
         <input
@@ -13,7 +13,8 @@
           class="w-25 form-control form-input form-input-bordered color-input rounded-l-none"
           :class="errorClasses"
           :placeholder="placeholder"
-          v-model="value"
+          :value="displayValue"
+          @blur="handleRawInput"
         />
       </div>
 
@@ -24,7 +25,7 @@
         :id="field.name"
         :class="[errorClasses, { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'z-10': true }]"
         :palette="palette"
-        :value="value"
+        :value="hexValue"
         @input="handleChange"
       />
 
@@ -38,6 +39,7 @@
 <script>
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
 import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatches, Twitter } from 'vue-color';
+import tinycolor from 'tinycolor2';
 
 export default {
   mixins: [FormField, HandlesValidationErrors],
@@ -72,12 +74,54 @@ export default {
     setInitialValue() {
       this.value = this.field.value || '';
     },
+
     fill(formData) {
-      formData.append(this.field.attribute, this.value || '');
+      if (!this.value) {
+        formData.append(this.field.attribute, null);
+        return;
+      }
+
+      const saveAs = this.field.saveAs;
+      const color = tinycolor(this.value);
+
+      let value = null;
+      if (saveAs === 'hex') value = color.toHexString();
+      if (saveAs === 'hex8') value = color.toHex8String();
+      if (saveAs === 'rgb' || saveAs === 'rgba') value = JSON.stringify(color.toRgb());
+      if (saveAs === 'hsl') value = JSON.stringify(color.toHsl());
+
+      formData.append(this.field.attribute, value);
     },
+
     handleChange(value) {
-      this.value = value.hex;
+      if (!value) {
+        this.value = void 0;
+        return;
+      }
+
+      if (typeof value === 'string') {
+        const color = tinycolor(value);
+        if (color._format) this.value = color.toHex8String();
+        return;
+      }
+
+      if (typeof value === 'object' && value.hex8) {
+        this.value = value.hex8;
+        return;
+      }
+
+      if (typeof value === 'object' && value._format) {
+        this.value = value.toHex8String();
+        return;
+      }
     },
+
+    handleRawInput(event) {
+      const value = event.target.value;
+      const color = tinycolor(value);
+      if (color._format) this.handleChange(color);
+    },
+
     documentClick(event) {
       const inputArea = this.$refs.inputArea;
       const pickerArea = this.$refs.pickerArea.$el;
@@ -87,6 +131,7 @@ export default {
       if (inputArea.contains(target) || pickerArea.contains(target)) return;
       this.hidePicker();
     },
+
     showPicker() {
       if (this.field.autoHidePicker) {
         if (!this.shouldShowPicker) {
@@ -95,6 +140,7 @@ export default {
         this.shouldShowPicker = true;
       }
     },
+
     hidePicker() {
       document.removeEventListener('click', this.documentClick);
       this.shouldShowPicker = false;
@@ -114,12 +160,33 @@ export default {
       }
       return this.field.extraAttributes.placeholder || this.field.name;
     },
+    displayValue() {
+      if (!this.value) return '';
+
+      const displayAs = this.field.displayAs;
+      const color = tinycolor(this.value);
+      if (displayAs === 'hex') return color.toHexString();
+      if (displayAs === 'hex8') return color.toHex8String();
+      if (displayAs === 'rgb' || displayAs === 'rgba') return color.toRgbString();
+      if (displayAs === 'hsl') return color.toHslString();
+      return color.toHexString();
+    },
+    hexValue() {
+      if (!this.value) return void 0;
+      return tinycolor(this.value).toHexString();
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.color-picker .absolute {
-  position: absolute !important;
+.color-picker-field {
+  .absolute {
+    position: absolute !important;
+  }
+
+  .color-button {
+    cursor: pointer;
+  }
 }
 </style>
