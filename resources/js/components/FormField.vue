@@ -172,8 +172,12 @@ export default {
       return color.toHexString();
     },
     hexValue() {
-      if (!this.value) return void 0;
-      return tinycolor(this.value).toHexString();
+      if (!this.value) return '#ffffff';
+      try {
+        return tinycolor(this.value).toHexString();
+      } catch (e) {
+        return '#ffffff';
+      }
     },
   },
 };
