@@ -80,6 +80,11 @@ class Color extends Field
         return $this->pickerType('swatches');
     }
 
+    public function hidePicker()
+    {
+        return $this->pickerType('none');
+    }
+
     public function saveAs($saveAs = 'hex')
     {
         if (!in_array($saveAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) throw new Exception("Invalid saveAs option provided [$saveAs].");

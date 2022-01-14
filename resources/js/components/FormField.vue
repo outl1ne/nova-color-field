@@ -133,6 +133,8 @@ export default {
     },
 
     showPicker() {
+      if (this.pickerType === 'none') return;
+
       if (this.field.autoHidePicker) {
         if (!this.shouldShowPicker) {
           document.addEventListener('click', this.documentClick);
