@@ -1,5 +1,5 @@
 <template>
-  <default-field :field="field" class="color-picker-field">
+  <default-field :field="field" :show-help-text="showHelpText" class="color-picker-field">
     <template slot="field">
       <div class="inline-flex mb-2 color-picker" @click="showPicker" ref="inputArea">
         <div
