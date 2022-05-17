@@ -1,6 +1,10 @@
 <template>
-  <default-field :field="field" :show-help-text="showHelpText" class="color-picker-field">
-    <template slot="field">
+  <DefaultField
+    :field="currentField"
+    :errors="errors"
+    :show-help-text="showHelpText"
+  >
+    <template #field>
       <div class="inline-flex mb-2 color-picker" @click="showPicker" ref="inputArea">
         <div
           class="color-button rounded-l-lg border-r-0 h-100 border border-60 color-input-value"
@@ -33,7 +37,7 @@
         {{ firstError }}
       </p>
     </template>
-  </default-field>
+  </DefaultField>
 </template>
 
 <script>
@@ -42,7 +46,7 @@ import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatch
 import tinycolor from 'tinycolor2';
 
 export default {
-  mixins: [FormField, HandlesValidationErrors],
+  mixins: [HandlesValidationErrors, DependentFormField],
 
   components: {
     'chrome-picker': Chrome,
@@ -68,6 +72,10 @@ export default {
     if (this.shouldShowPicker) {
       document.removeEventListener('click', this.documentClick);
     }
+  },
+
+  mounted() {
+    console.log(this);
   },
 
   methods: {

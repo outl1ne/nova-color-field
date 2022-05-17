@@ -3987,7 +3987,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [laravel_nova__WEBPACK_IMPORTED_MODULE_0__.FormField, laravel_nova__WEBPACK_IMPORTED_MODULE_0__.HandlesValidationErrors],
+  mixins: [laravel_nova__WEBPACK_IMPORTED_MODULE_0__.HandlesValidationErrors, DependentFormField],
   components: {
     'chrome-picker': _ckpack_vue_color__WEBPACK_IMPORTED_MODULE_2__["default"],
     'compact-picker': _ckpack_vue_color__WEBPACK_IMPORTED_MODULE_3__["default"],
@@ -4009,6 +4009,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     if (this.shouldShowPicker) {
       document.removeEventListener('click', this.documentClick);
     }
+  },
+  mounted: function mounted() {
+    console.log(this);
   },
   methods: {
     setInitialValue: function setInitialValue() {
@@ -4204,24 +4207,21 @@ var _withScopeId = function _withScopeId(n) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-c023248a"), n = n(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)(), n;
 };
 
-var _hoisted_1 = {
-  slot: "field"
-};
-var _hoisted_2 = ["id", "placeholder", "value"];
-var _hoisted_3 = {
+var _hoisted_1 = ["id", "placeholder", "value"];
+var _hoisted_2 = {
   key: 1,
   "class": "my-2 text-danger"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_default_field = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("default-field");
+  var _component_DefaultField = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DefaultField");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_default_field, {
-    field: $props.field,
-    "show-help-text": _ctx.showHelpText,
-    "class": "color-picker-field"
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_DefaultField, {
+    field: _ctx.currentField,
+    errors: _ctx.errors,
+    "show-help-text": _ctx.showHelpText
   }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("template", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    field: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
         "class": "inline-flex mb-2 color-picker",
         onClick: _cache[1] || (_cache[1] = function () {
           return $options.showPicker && $options.showPicker.apply($options, arguments);
@@ -4246,7 +4246,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, null, 42
       /* CLASS, PROPS, HYDRATE_EVENTS */
-      , _hoisted_2)], 512
+      , _hoisted_1)], 512
       /* NEED_PATCH */
       ), $data.shouldShowPicker ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)($options.component), {
         key: 0,
@@ -4261,16 +4261,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onInput: $options.handleChange
       }, null, 8
       /* PROPS */
-      , ["id", "class", "palette", "value", "onInput"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.hasError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.firstError), 1
+      , ["id", "class", "palette", "value", "onInput"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.hasError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.firstError), 1
       /* TEXT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["field", "show-help-text"]);
+  , ["field", "errors", "show-help-text"]);
 }
 
 /***/ }),
