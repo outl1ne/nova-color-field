@@ -1,3 +1,13 @@
-let mix = require('laravel-mix');
+let mix = require('laravel-mix')
+let tailwindcss = require('tailwindcss')
+let path = require('path')
+let postcssImport = require('postcss-import')
 
-mix.js('resources/js/field.js', 'dist/js').vue();
+require('./nova.mix.js')
+
+mix
+  .setPublicPath('dist')
+  .js('resources/js/field.js', 'js')
+  .vue({ version: 3 })
+  //.postCss('resources/css/field.css', 'dist/css/', [postcssImport(), tailwindcss('tailwind.config.js'),])
+  .nova('optimistdigital/nova-color-fields')

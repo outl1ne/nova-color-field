@@ -38,7 +38,7 @@
 
 <script>
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
-import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatches, Twitter } from 'vue-color';
+import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatches, Twitter } from '@ckpack/vue-color';
 import tinycolor from 'tinycolor2';
 
 export default {
