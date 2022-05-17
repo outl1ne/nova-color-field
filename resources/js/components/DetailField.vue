@@ -1,16 +1,16 @@
 <template>
-  <panel-item :field="field">
-    <template slot="value">
-      <div class="inline-flex items-center">
-        <div class="rounded mr-2" v-bind:style="{ backgroundColor: field.value, width: '20px', height: '20px' }" />
+  <PanelItem :index="index" :field="field">
+    <template #value>
+      <div class="nc-inline-flex nc-items-center">
+        <div class="nc-rounded nc-mr-2" v-bind:style="{ backgroundColor: field.value, width: '20px', height: '20px' }" />
         <div>{{ field.value }}</div>
       </div>
     </template>
-  </panel-item>
+  </PanelItem>
 </template>
 
 <script>
 export default {
-  props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['index', 'resource', 'resourceName', 'resourceId', 'field'],
 };
 </script>
