@@ -120,9 +120,7 @@ export default {
     },
 
     showPicker() {
-      console.log("shw");
       if (this.pickerType === 'none') return;
-
       if (this.field.autoHidePicker) {
         if (!this.shouldShowPicker) {
           document.addEventListener('click', this.documentClick);
@@ -131,7 +129,6 @@ export default {
       }
     },
     togglePicker() {
-      console.log("tgl");
       if (this.shouldShowPicker) {
         this.hidePicker();
       } else {
@@ -139,7 +136,6 @@ export default {
       }
     },
     hidePicker() {
-      console.log("hde");
       document.removeEventListener('click', this.documentClick);
       if (this.shouldShowPicker === true) this.valueUpdated();
       this.shouldShowPicker = false;
