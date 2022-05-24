@@ -6,7 +6,7 @@
           class="nc-rounded nc-mr-2"
           v-bind:style="{ backgroundColor: field.value, width: '20px', height: '20px' }"
         />
-        <div>{{ field.value }}</div>
+        <div>{{ field.value || '—' }}</div>
       </div>
     </template>
   </PanelItem>

@@ -87,7 +87,7 @@ export default {
 
     fill(formData) {
       if (!this.value) {
-        formData.append(this.field.attribute, null);
+        formData.append(this.field.attribute, '');
         return;
       }
       formData.append(this.field.attribute, this.saveValue);
@@ -101,6 +101,13 @@ export default {
 
     handleRawInput(event) {
       const value = event.target.value;
+
+      if (!value) {
+        this.value = '';
+        this.valueUpdated();
+        return;
+      }
+
       const color = tinycolor(value);
       if (color._format) {
         this.value = color.toHex8String();

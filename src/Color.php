@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\SupportsDependentFields;
 
 class Color extends Field
 {
-
     use SupportsDependentFields;
 
     public $component = 'color-field';
