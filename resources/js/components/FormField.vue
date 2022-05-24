@@ -29,7 +29,11 @@
         ref="pickerArea"
         :is="component"
         :id="field.name"
-        :class="['nc-picker', errorClasses, { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'nc-z-10': true }]"
+        :class="[
+          'nc-picker',
+          errorClasses,
+          { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'nc-z-10': true },
+        ]"
         :palette="palette"
         v-model="value"
       />
@@ -105,8 +109,8 @@ export default {
     },
 
     handleEnter(event) {
-      event.target.blur(); 
-      this.hidePicker()
+      event.target.blur();
+      this.hidePicker();
     },
 
     documentClick(event) {
