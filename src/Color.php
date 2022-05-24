@@ -5,9 +5,13 @@ namespace OptimistDigital\NovaColorField;
 use Exception;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\SupportsDependentFields;
 
 class Color extends Field
 {
+
+    use SupportsDependentFields;
+
     public $component = 'color-field';
 
     public function __construct($name, $attribute = null, $resolveCallback = null)
@@ -88,12 +92,14 @@ class Color extends Field
     public function saveAs($saveAs = 'hex')
     {
         if (!in_array($saveAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) throw new Exception("Invalid saveAs option provided [$saveAs].");
+        $saveAs = ($saveAs === "rgba") ? "rgb" : $saveAs;
         return $this->withMeta(['saveAs' => $saveAs]);
     }
 
     public function displayAs($displayAs = 'hex')
     {
         if (!in_array($displayAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) throw new Exception("Invalid displayAs option provided [$displayAs].");
+        $displayAs = ($displayAs === "rgba") ? "rgb" : $displayAs;
         return $this->withMeta(['displayAs' => $displayAs]);
     }
 

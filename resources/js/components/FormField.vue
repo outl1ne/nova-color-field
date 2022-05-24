@@ -1,20 +1,26 @@
 <template>
-  <default-field :field="field" :show-help-text="showHelpText" class="color-picker-field">
-    <template slot="field">
-      <div class="inline-flex mb-2 color-picker" @click="showPicker" ref="inputArea">
+  <DefaultField :field="currentField" :errors="errors" :show-help-text="showHelpText">
+    <template #field>
+      <div
+        class="nc-inline-flex nc-mb-2 color-picker nc-overflow-hidden nc-rounded-lg form-input-bordered"
+        ref="inputArea"
+      >
         <div
-          class="color-button rounded-l-lg border-r-0 h-100 border border-60 color-input-value"
+          class="color-button border-r h-100 color-input-value"
           v-bind:style="{ backgroundColor: hexValue, width: '36px' }"
+          @click="togglePicker"
         />
 
         <input
           :id="field.name"
           type="text"
-          class="w-25 form-control form-input form-input-bordered color-input rounded-l-none"
+          class="nc-w-25 nc-border-0 form-control form-input color-input nc-rounded-l-none"
           :class="errorClasses"
           :placeholder="placeholder"
           :value="displayValue"
+          v-on:keydown.enter.prevent="handleEnter"
           @blur="handleRawInput"
+          @click="showPicker"
         />
       </div>
 
@@ -23,26 +29,26 @@
         ref="pickerArea"
         :is="component"
         :id="field.name"
-        :class="[errorClasses, { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'z-10': true }]"
+        :class="['nc-picker', errorClasses, { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'nc-z-10': true }]"
         :palette="palette"
-        :value="hexValue"
-        @input="handleChange"
+        v-model="value"
       />
 
-      <p v-if="hasError" class="my-2 text-danger">
+      <p v-if="hasError" class="nc-my-2 text-danger">
         {{ firstError }}
       </p>
     </template>
-  </default-field>
+  </DefaultField>
 </template>
 
 <script>
-import { FormField, HandlesValidationErrors } from 'laravel-nova';
-import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatches, Twitter } from 'vue-color';
+import { DependentFormField, HandlesValidationErrors } from 'laravel-nova';
+import { Chrome, Compact, Grayscale, Material, Photoshop, Sketch, Slider, Swatches, Twitter } from '@ckpack/vue-color';
 import tinycolor from 'tinycolor2';
 
 export default {
-  mixins: [FormField, HandlesValidationErrors],
+  name: 'NovaColorField',
+  mixins: [HandlesValidationErrors, DependentFormField],
 
   components: {
     'chrome-picker': Chrome,
@@ -80,46 +86,27 @@ export default {
         formData.append(this.field.attribute, null);
         return;
       }
-
-      const saveAs = this.field.saveAs;
-      const color = tinycolor(this.value);
-
-      let value = null;
-      if (saveAs === 'hex') value = color.toHexString();
-      if (saveAs === 'hex8') value = color.toHex8String();
-      if (saveAs === 'rgb' || saveAs === 'rgba') value = JSON.stringify(color.toRgb());
-      if (saveAs === 'hsl') value = JSON.stringify(color.toHsl());
-
-      formData.append(this.field.attribute, value);
+      formData.append(this.field.attribute, this.saveValue);
     },
 
-    handleChange(value) {
-      if (!value) {
-        this.value = void 0;
-        return;
-      }
-
-      if (typeof value === 'string') {
-        const color = tinycolor(value);
-        if (color._format) this.value = color.toHex8String();
-        return;
-      }
-
-      if (typeof value === 'object' && value.hex8) {
-        this.value = value.hex8;
-        return;
-      }
-
-      if (typeof value === 'object' && value._format) {
-        this.value = value.toHex8String();
-        return;
+    valueUpdated() {
+      if (this.field) {
+        this.emitFieldValueChange(this.field.attribute, this.saveValue);
       }
     },
 
     handleRawInput(event) {
       const value = event.target.value;
       const color = tinycolor(value);
-      if (color._format) this.handleChange(color);
+      if (color._format) {
+        this.value = color.toHex8String();
+        this.valueUpdated();
+      }
+    },
+
+    handleEnter(event) {
+      event.target.blur(); 
+      this.hidePicker()
     },
 
     documentClick(event) {
@@ -134,7 +121,6 @@ export default {
 
     showPicker() {
       if (this.pickerType === 'none') return;
-
       if (this.field.autoHidePicker) {
         if (!this.shouldShowPicker) {
           document.addEventListener('click', this.documentClick);
@@ -142,9 +128,16 @@ export default {
         this.shouldShowPicker = true;
       }
     },
-
+    togglePicker() {
+      if (this.shouldShowPicker) {
+        this.hidePicker();
+      } else {
+        this.showPicker();
+      }
+    },
     hidePicker() {
       document.removeEventListener('click', this.documentClick);
+      if (this.shouldShowPicker === true) this.valueUpdated();
       this.shouldShowPicker = false;
     },
   },
@@ -164,19 +157,22 @@ export default {
     },
     displayValue() {
       if (!this.value) return '';
-
-      const displayAs = this.field.displayAs;
-      const color = tinycolor(this.value);
-      if (displayAs === 'hex') return color.toHexString();
-      if (displayAs === 'hex8') return color.toHex8String();
-      if (displayAs === 'rgb' || displayAs === 'rgba') return color.toRgbString();
-      if (displayAs === 'hsl') return color.toHslString();
-      return color.toHexString();
+      const displayAs = this.field.displayAs ?? 'hex8';
+      const value = typeof this.value === 'object' && this.value.hex8 ? this.value.hex8 : this.value;
+      const color = tinycolor(value);
+      return ['hex', 'hex8', 'rgb', 'hsl'].includes(displayAs) ? color.toString(displayAs) : color.toHex8String();
+    },
+    saveValue() {
+      if (!this.value) return '';
+      const saveAs = this.field.saveAs ?? 'hex8';
+      const value = typeof this.value === 'object' && this.value.hex8 ? this.value.hex8 : this.value;
+      const color = tinycolor(value);
+      return ['hex', 'hex8', 'rgb', 'hsl'].includes(saveAs) ? color.toString(saveAs) : color.toHex8String();
     },
     hexValue() {
       if (!this.value) return '#ffffff';
       try {
-        return tinycolor(this.value).toHexString();
+        return tinycolor(this.saveValue).toHex8String();
       } catch (e) {
         return '#ffffff';
       }
@@ -185,14 +181,22 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.color-picker-field {
-  .absolute {
-    position: absolute !important;
-  }
+<style scoped>
+.color-picker .color-button {
+  cursor: pointer;
+}
 
-  .color-button {
-    cursor: pointer;
-  }
+.nc-picker.absolute {
+  position: absolute !important;
+}
+
+.color-picker.form-input-bordered:focus-within {
+  border-color: rgba(var(--colors-primary-300));
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-color: rgba(var(--colors-primary-100));
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 </style>
