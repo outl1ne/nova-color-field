@@ -1,5 +1,5 @@
 {
-  "name": "optimistdigital/nova-color-field",
+  "name": "outl1ne/nova-color-field",
   "description": "A Laravel Nova Color Picker field.",
   "keywords": [
     "laravel",
@@ -20,13 +20,13 @@
   },
   "autoload": {
     "psr-4": {
-      "OptimistDigital\\NovaColorField\\": "src/"
+      "Outl1ne\\NovaColorField\\": "src/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "OptimistDigital\\NovaColorField\\ColorFieldServiceProvider"
+        "Outl1ne\\NovaColorField\\ColorFieldServiceProvider"
       ]
     }
   },
@@ -35,10 +35,10 @@
   },
   "repositories": [
     {
-        "type": "composer",
-        "url": "https://nova.laravel.com"
+      "type": "composer",
+      "url": "https://nova.laravel.com"
     }
-],
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true
 }

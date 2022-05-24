@@ -1,6 +1,6 @@
 <?php
 
-namespace OptimistDigital\NovaColorField;
+namespace Outl1ne\NovaColorField;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
@@ -12,7 +12,7 @@ class ColorFieldServiceProvider extends ServiceProvider
     {
         Nova::serving(function (ServingNova $event) {
             Nova::script('color', __DIR__ . '/../dist/js/field.js');
-            Nova::style('color', __DIR__.'/../dist/css/field.css');
+            Nova::style('color', __DIR__ . '/../dist/css/field.css');
         });
     }
 
