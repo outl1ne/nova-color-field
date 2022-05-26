@@ -23,7 +23,7 @@
         ref="pickerArea"
         :is="component"
         :id="field.name"
-        :class="[errorClasses, { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'z-10': true }]"
+        :class="[errorClasses, { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'z-30': true }]"
         :palette="palette"
         :value="hexValue"
         @input="handleChange"
