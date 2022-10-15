@@ -176,6 +176,9 @@ export default {
     hexValue() {
       if (!this.value) return '#ffffff';
       try {
+        if (this.field.displayAs === 'hex8') {
+          return tinycolor(this.value).toHex8String()
+        }
         return tinycolor(this.value).toHexString();
       } catch (e) {
         return '#ffffff';
