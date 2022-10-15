@@ -207,7 +207,7 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "inline-flex items-center"
   }, [_c("div", {
-    staticClass: "rounded mr-2",
+    staticClass: "rounded mr-2 border border-60",
     style: {
       backgroundColor: _vm.field.value,
       width: "20px",
@@ -313,7 +313,7 @@ var render = function render() {
   return _c("div", {
     staticClass: "inline-flex items-center"
   }, [_c("div", {
-    staticClass: "rounded mr-2",
+    staticClass: "rounded mr-2 border border-60",
     style: {
       backgroundColor: _vm.field.value,
       width: "20px",
