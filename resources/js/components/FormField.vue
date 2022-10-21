@@ -34,7 +34,7 @@
         :class="[
           'nc-picker',
           errorClasses,
-          { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'o1-z-10': true },
+          { absolute: currentField.autoHidePicker && currentField.pickerType !== 'slider', 'o1-z-10': true },
         ]"
         :palette="palette"
         :modelValue="vcValue"
@@ -142,7 +142,7 @@ export default {
 
     showPicker() {
       if (this.pickerType === 'none') return;
-      if (this.field.autoHidePicker) {
+      if (this.currentField.autoHidePicker) {
         if (!this.shouldShowPicker) {
           document.addEventListener('click', this.documentClick);
         }
@@ -165,23 +165,23 @@ export default {
 
   computed: {
     component() {
-      return this.field.pickerType + '-picker';
+      return this.currentField.pickerType + '-picker';
     },
 
     palette() {
-      return this.field.palette || undefined;
+      return this.currentField.palette || undefined;
     },
 
     placeholder() {
-      if (this.field.extraAttributes === undefined) {
-        return this.field.name;
+      if (this.currentField.extraAttributes === undefined) {
+        return this.currentField.name;
       }
-      return this.field.extraAttributes.placeholder || this.field.name;
+      return this.currentField.extraAttributes.placeholder || this.currentField.name;
     },
 
     displayValue() {
       if (!this.value) return '';
-      const displayAs = this.field.displayAs || 'hex8';
+      const displayAs = this.currentField.displayAs || 'hex8';
       const value = typeof this.value === 'object' && this.value.hex8 ? this.value.hex8 : this.value;
       const color = tinycolor(value);
       return ['hex', 'hex8', 'rgb', 'hsl'].includes(displayAs) ? color.toString(displayAs) : color.toHex8String();
@@ -189,7 +189,7 @@ export default {
 
     saveValue() {
       if (!this.value) return '';
-      const saveAs = this.field.saveAs || 'hex8';
+      const saveAs = this.currentField.saveAs || 'hex8';
       const value = typeof this.value === 'object' && this.value.hex8 ? this.value.hex8 : this.value;
       const color = tinycolor(value);
       return ['hex', 'hex8', 'rgb', 'hsl'].includes(saveAs) ? color.toString(saveAs) : color.toHex8String();
