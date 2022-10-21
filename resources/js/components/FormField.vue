@@ -2,19 +2,21 @@
   <DefaultField :field="currentField" :errors="errors" :show-help-text="showHelpText">
     <template #field>
       <div
-        class="nc-inline-flex nc-mb-2 color-picker nc-overflow-hidden nc-rounded-lg form-input-bordered"
+        class="o1-inline-flex o1-mb-2 color-picker o1-overflow-hidden o1-rounded-lg form-input-bordered"
         ref="inputArea"
       >
-        <div
-          class="color-button border-r h-100 color-input-value"
-          v-bind:style="{ backgroundColor: hexValue, width: '36px' }"
-          @click="togglePicker"
-        />
+        <div class="o1-bg-checkered" style="z-index: 2">
+          <div
+            class="o1-border-r o1-border-gray-100 dark:o1-border-gray-700 o1-cursor-pointer"
+            :style="{ backgroundColor: rgbaValue, width: '36px', height: '36px' }"
+            @click="togglePicker"
+          />
+        </div>
 
         <input
           :id="field.name"
           type="text"
-          class="nc-w-25 nc-border-0 form-control form-input color-input nc-rounded-l-none"
+          class="o1-w-25 o1-border-0 w-full form-control form-input form-input-bordered o1-rounded-l-none"
           :class="errorClasses"
           :placeholder="placeholder"
           :value="displayValue"
@@ -32,13 +34,14 @@
         :class="[
           'nc-picker',
           errorClasses,
-          { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'nc-z-10': true },
+          { absolute: field.autoHidePicker && field.pickerType !== 'slider', 'o1-z-10': true },
         ]"
         :palette="palette"
-        v-model="value"
+        :modelValue="vcValue"
+        @update:modelValue="setVcValue"
       />
 
-      <p v-if="hasError" class="nc-my-2 text-danger">
+      <p v-if="hasError" class="o1-my-2 text-danger">
         {{ firstError }}
       </p>
     </template>
@@ -71,6 +74,7 @@ export default {
   data() {
     return {
       shouldShowPicker: !this.field.autoHidePicker,
+      vcValue: {},
     };
   },
 
@@ -82,7 +86,13 @@ export default {
 
   methods: {
     setInitialValue() {
-      this.value = this.field.value || '';
+      const val = this.field.value || null;
+      this.value = val ? tinycolor(val) : '';
+      this.vcValue = this.value ? this.value.toRgbString() : '';
+    },
+
+    setVcValue(newValue) {
+      this.value = tinycolor(newValue.hex8);
     },
 
     fill(formData) {
@@ -110,7 +120,7 @@ export default {
 
       const color = tinycolor(value);
       if (color._format) {
-        this.value = color.toHex8String();
+        this.value = color;
         this.valueUpdated();
       }
     },
@@ -157,57 +167,43 @@ export default {
     component() {
       return this.field.pickerType + '-picker';
     },
+
     palette() {
       return this.field.palette || undefined;
     },
+
     placeholder() {
       if (this.field.extraAttributes === undefined) {
         return this.field.name;
       }
       return this.field.extraAttributes.placeholder || this.field.name;
     },
+
     displayValue() {
       if (!this.value) return '';
-      const displayAs = this.field.displayAs ?? 'hex8';
+      const displayAs = this.field.displayAs || 'hex8';
       const value = typeof this.value === 'object' && this.value.hex8 ? this.value.hex8 : this.value;
       const color = tinycolor(value);
       return ['hex', 'hex8', 'rgb', 'hsl'].includes(displayAs) ? color.toString(displayAs) : color.toHex8String();
     },
+
     saveValue() {
       if (!this.value) return '';
-      const saveAs = this.field.saveAs ?? 'hex8';
+      const saveAs = this.field.saveAs || 'hex8';
       const value = typeof this.value === 'object' && this.value.hex8 ? this.value.hex8 : this.value;
       const color = tinycolor(value);
       return ['hex', 'hex8', 'rgb', 'hsl'].includes(saveAs) ? color.toString(saveAs) : color.toHex8String();
     },
-    hexValue() {
-      if (!this.value) return '#ffffff';
-      try {
-        return tinycolor(this.saveValue).toHex8String();
-      } catch (e) {
-        return '#ffffff';
-      }
+
+    rgbaValue() {
+      return this.value ? this.value.toRgbString() : '';
     },
   },
 };
 </script>
 
 <style scoped>
-.color-picker .color-button {
-  cursor: pointer;
-}
-
 .nc-picker.absolute {
   position: absolute !important;
-}
-
-.color-picker.form-input-bordered:focus-within {
-  border-color: rgba(var(--colors-primary-300));
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  --tw-ring-color: rgba(var(--colors-primary-100));
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 </style>

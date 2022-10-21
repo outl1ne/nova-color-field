@@ -1,11 +1,10 @@
 <template>
   <PanelItem :index="index" :field="field">
     <template #value>
-      <div class="nc-inline-flex nc-items-center">
-        <div
-          class="nc-rounded nc-mr-2"
-          v-bind:style="{ backgroundColor: field.value, width: '20px', height: '20px' }"
-        />
+      <div class="o1-inline-flex o1-items-center">
+        <div class="o1-bg-checkered o1-mr-2 o1-rounded o1-overflow-hidden" style="width: 22px; height: 22px">
+          <div class="o1-mr-2 o1-w-full o1-h-full" :style="{ backgroundColor: field.value }" />
+        </div>
         <div>{{ field.value || '—' }}</div>
       </div>
     </template>
