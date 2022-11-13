@@ -77,7 +77,7 @@ Adding custom pallette colors to the pickers can be done like so:
 ```php
 Color::make('Color')
   ->compact()
-  ->palette(['#beaf00', '#DEADAF', '#000']);
+  ->palette(['#beaf00', '#DEADAF', '#000']),
 ```
 
 ## Credits
