@@ -20,6 +20,7 @@
           :class="errorClasses"
           :placeholder="placeholder"
           :value="displayValue"
+          :disabled="field.readonly"
           v-on:keydown.enter.prevent="handleEnter"
           @blur="handleRawInput"
           @click="showPicker"
