@@ -43,7 +43,7 @@ public function fields(Request $request) {
 
 ### Themes
 
-Available themes: `chrome, compact, grayscale, material, photoshop, sketch, slider, swatches, twitter`.
+Available themes: `chrome, compactTheme, grayscale, material, photoshop, sketch, slider, swatches, twitter`.
 
 See the theme demos [here](http://xiaokaike.github.io/vue-color/).
 
@@ -76,7 +76,7 @@ Adding custom pallette colors to the pickers can be done like so:
 
 ```php
 Color::make('Color')
-  ->compact()
+  ->compactTheme()
   ->palette(['#beaf00', '#DEADAF', '#000']),
 ```
 

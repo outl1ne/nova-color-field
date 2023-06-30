@@ -4,8 +4,8 @@ namespace Outl1ne\NovaColorField;
 
 use Exception;
 use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\SupportsDependentFields;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Color extends Field
 {
@@ -48,7 +48,7 @@ class Color extends Field
         return $this->pickerType('twitter');
     }
 
-    public function compact()
+    public function compactTheme()
     {
         return $this->pickerType('compact');
     }
@@ -90,15 +90,21 @@ class Color extends Field
 
     public function saveAs($saveAs = 'hex')
     {
-        if (!in_array($saveAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) throw new Exception("Invalid saveAs option provided [$saveAs].");
-        $saveAs = ($saveAs === "rgba") ? "rgb" : $saveAs;
+        if (! in_array($saveAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) {
+            throw new Exception("Invalid saveAs option provided [{$saveAs}].");
+        }
+        $saveAs = ($saveAs === 'rgba') ? 'rgb' : $saveAs;
+
         return $this->withMeta(['saveAs' => $saveAs]);
     }
 
     public function displayAs($displayAs = 'hex')
     {
-        if (!in_array($displayAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) throw new Exception("Invalid displayAs option provided [$displayAs].");
-        $displayAs = ($displayAs === "rgba") ? "rgb" : $displayAs;
+        if (! in_array($displayAs, ['rgb', 'rgba', 'hex', 'hex8', 'hsl'])) {
+            throw new Exception("Invalid displayAs option provided [{$displayAs}].");
+        }
+        $displayAs = ($displayAs === 'rgba') ? 'rgb' : $displayAs;
+
         return $this->withMeta(['displayAs' => $displayAs]);
     }
 
@@ -108,7 +114,10 @@ class Color extends Field
             // Try to turn into array
             $value = $request[$requestAttribute];
             $arrayValue = json_decode($value, true);
-            if (!empty($arrayValue)) $value = $arrayValue;
+
+            if (! empty($arrayValue)) {
+                $value = $arrayValue;
+            }
 
             $model->{$attribute} = $this->isNullValue($value) ? null : $value;
         }
