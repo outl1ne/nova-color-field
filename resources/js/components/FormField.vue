@@ -41,9 +41,6 @@
         @update:modelValue="setVcValue"
       />
 
-      <p v-if="hasError" class="o1-my-2 text-danger">
-        {{ firstError }}
-      </p>
     </template>
   </DefaultField>
 </template>
